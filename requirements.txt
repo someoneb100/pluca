@@ -1,1 +1,4 @@
-pandas 
+pandas
+tensorflow-gpu
+matplotlib
+numpy
