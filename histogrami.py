@@ -21,25 +21,44 @@ for root, subdirectories, files in os.walk(train_dir):
         width_sizes.append(width)
         proportions.append(width/height)
 
+shape = (500, 700)
+
 fig = plt.figure(figsize=(10,7))
+fig.suptitle(f"Odlucene dimenzije: {shape}", weight= "bold")
 rows = 1
 cols = 3
 
+height = {
+    "array" : height_sizes, 
+    "min" : min(height_sizes),
+    "avg" : sum(height_sizes)/len(height_sizes)
+}
+
+width = {
+    "array" : width_sizes, 
+    "min" : min(width_sizes),
+    "avg" : sum(width_sizes)/len(width_sizes)
+}
+
+prop = {
+    "array" : proportions,
+    "avg" : sum(proportions)/len(proportions)
+}
+
 fig.add_subplot(rows,cols, 1)
-plt.hist(height_sizes)
-plt.title("Visine")
-plt.xlabel("Najmanja je " + str(min(height_sizes)))
-plt.ylabel("Prosek je " + str(sum(height_sizes)/len(height_sizes)))
+plt.hist(height["array"])
+plt.title("Visina")
+plt.text(1900, 1675, f"Min: {height['min']}")
+plt.text(1900, 1625, f"Avg: {height['avg']:.0f}")
 
 fig.add_subplot(rows,cols, 2)
-plt.hist(width_sizes)
-plt.title("Sirine")
-plt.xlabel("Najmanja je " + str(min(width_sizes)))
-plt.ylabel("Prosek je " + str(sum(width_sizes)/len(width_sizes)))
+plt.hist(width["array"])
+plt.title("Sirina")
+plt.text(1900, 1425, f"Min: {width['min']}")
+plt.text(1900, 1375, f"Avg: {width['avg']:.0f}")
 
 fig.add_subplot(rows,cols, 3)
-plt.hist(proportions)
-plt.title("Proporcije")
-plt.xlabel("Najmanja je " + str(min(proportions)))
-plt.ylabel("Prosek je " + str(sum(proportions)/len(proportions)))
+plt.hist(prop["array"])
+plt.title("Proporcija")
+plt.text(2.6, 2000, f"Avg: {prop['avg']:.1f}")
 plt.show()
