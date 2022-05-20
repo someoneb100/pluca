@@ -11,7 +11,7 @@ def normalize_image(old_image: Image, new_shape: "tuple[int, int]") -> Image:
     else:
         #slika je malo sira i gore-dole treba dodati crno
         resized_im = old_image.resize((new_shape[0], int(new_shape[0]/prop)))
-    new_im = Image.new("RGB", new_shape)
+    new_im = Image.new("L", new_shape)
     new_im.paste(resized_im, ((new_shape[0]-resized_im.size[0])//2, (new_shape[1]-resized_im.size[1])//2))
     return new_im
 
