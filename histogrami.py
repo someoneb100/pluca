@@ -21,7 +21,7 @@ for root, subdirectories, files in os.walk(train_dir):
         width_sizes.append(width)
         proportions.append(width/height)
 
-shape = (500, 700)
+shape = (700, 500)
 
 fig = plt.figure(figsize=(10,7))
 fig.suptitle(f"Odlucene dimenzije: {shape}", weight= "bold")
