@@ -30,7 +30,7 @@ def normalize_directory(src_dir: str, dest_dir: str, new_shape: "tuple[int, int]
         dest_img.save(path.join(dest_dir, img_name))
 
 
-new_shape = (700, 500)
+new_shape = (350, 250)
 
 if __name__ == "__main__":
     if(len(argv) != 3):

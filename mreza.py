@@ -25,7 +25,7 @@ def get_data(directory: str) -> "tuple[np.ndarray, np.ndarray]":
     ima = listdir(path.join(directory, "PNEUMONIA"))
     nema = listdir(path.join(directory, "NORMAL"))
     size = len(ima) + len(nema)
-    X = np.empty((size, 500, 700), dtype=np.float32)
+    X = np.empty((size, 250, 350), dtype=np.uint8)
     y = np.empty((size), dtype=np.uint8)
     for i, file in enumerate(ima):
         X[i] = np.asarray(Image.open(path.join(directory, "PNEUMONIA", file)))
@@ -43,11 +43,11 @@ def make_model(input_shape, learning_rate):
     clip_input = clip_by_value(gauss, 0, 1)
     reshape_input = Reshape((input_shape[0], input_shape[1], 1))(clip_input)
 
-    c1 = Conv2D(32, (3,3), activation="relu")(reshape_input)
+    c1 = Conv2D(8, (3,3), activation="relu")(reshape_input)
     mp1 = MaxPool2D((3,3))(c1)
-    c2 = Conv2D(64, (4,4), activation="relu")(mp1)
+    c2 = Conv2D(16, (4,4), activation="relu")(mp1)
     mp2 = MaxPool2D((4,4))(c2)
-    c3 = Conv2D(64, (5,5), activation="relu")(mp2)
+    c3 = Conv2D(32, (5,5), activation="relu")(mp2)
     mp3 = MaxPool2D((5,5))(c3)
     drop1 = Dropout(0.2)(mp3) 
     flat = Flatten()(drop1)
@@ -66,7 +66,8 @@ if __name__ == "__main__":
     directory_train = "../chest_xray_norm/train"
     x_train, y_train = get_data(directory_train)
     
-    model = make_model(x_train[0].shape, 0.1)
+    model = make_model(x_train[0].shape, 0.01)
     model.summary()
+    model.save("model.md5")
 
-    model.fit(x_train, y_train, epochs=5, batch_size=0, verbose=1, shuffle=True)
+    model.fit(x_train, y_train, epochs=1, batch_size=0, verbose=1)
