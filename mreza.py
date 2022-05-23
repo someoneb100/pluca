@@ -1,6 +1,7 @@
 from os import path, listdir
 from PIL import Image
 import numpy as np
+from sklearn.metrics import f1_score
 
 from tensorflow.keras.layers import GaussianNoise, Input, Rescaling, Reshape, Dropout, Flatten
 from tensorflow import clip_by_value
@@ -58,16 +59,18 @@ def make_model(input_shape, learning_rate):
     drop2 = Dropout(0.3)(d2)
     output_layer = Dense(1, activation="sigmoid")(drop2)
     model = Model(inputs=[input_layer], outputs=[output_layer])
-    model.compile(loss="binary_crossentropy", optimizer=Adam(learning_rate=learning_rate))
+    model.compile(loss="binary_crossentropy", optimizer=Adam(learning_rate=learning_rate), metrics=["accuracy"])
     return model
 
 
 if __name__ == "__main__":
     directory_train = "../chest_xray_norm/train"
     x_train, y_train = get_data(directory_train)
+
+    directory_val = "../chest_xray_norm/val"
+    x_val, y_val = get_data(directory_val)
     
     model = make_model(x_train[0].shape, 0.01)
     model.summary()
-    model.save("model.md5")
 
-    model.fit(x_train, y_train, epochs=1, batch_size=0, verbose=1)
+    model.fit(x_train, y_train, epochs=20, batch_size=0, verbose=1, shuffle=True, validation_data=(x_val, y_val))
