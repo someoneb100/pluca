@@ -1,6 +1,7 @@
 from os import path, listdir
 from PIL import Image
 import numpy as np
+import json
 from sklearn.metrics import f1_score
 
 from tensorflow.keras.layers import GaussianNoise, Input, Rescaling, Reshape, Dropout, Flatten
@@ -35,6 +36,20 @@ def get_data(directory: str) -> "tuple[np.ndarray, np.ndarray]":
         X[len(ima) + i] = np.asarray(Image.open(path.join(directory, "NORMAL", file)))
         y[len(ima) + i] = 0
     return X , y
+
+
+def write_history(history, name) -> None: 
+    # Serializing json 
+    json_history = json.dumps(history.history, indent = 4)
+    
+    # Writing json
+    with open(name, "w") as outfile:
+        outfile.write(json_history)
+
+def read_history(name):
+    with open(name, 'r') as openfile:
+    # Reading from json file
+        return json.load(openfile)
 
 
 def make_model(input_shape, learning_rate):
