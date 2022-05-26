@@ -5,14 +5,12 @@ from matplotlib import pyplot as plt
 def main():
     root_dir = os.path.abspath(os.path.join(os.path.curdir, os.path.pardir, "chest_xray"))
     train_dir = os.path.join(root_dir, "train")
-    test_dir = os.path.join(root_dir, "test")
-    val_dir = os.path.join(root_dir, "val")
 
     height_sizes = []
     width_sizes = []
     proportions = []
 
-    for root, subdirectories, files in os.walk(train_dir):
+    for root, _, files in os.walk(train_dir):
         for f in files:
             img_path = os.path.join(root,f)
             image = PIL.Image.open(img_path)
@@ -22,9 +20,9 @@ def main():
             width_sizes.append(width)
             proportions.append(width/height)
 
-    shape = (700, 500)
+    shape = (350, 250)
 
-    fig = plt.figure(figsize=(10,7))
+    fig = plt.figure(figsize=(15,5))
     fig.suptitle(f"Odlucene dimenzije: {shape}", weight= "bold")
     rows = 1
     cols = 3
@@ -60,7 +58,7 @@ def main():
 
     fig.add_subplot(rows,cols, 3)
     plt.hist(prop["array"])
-    plt.title("Proporcija")
+    plt.title("Proporcija (Sirina : Visina)")
     plt.text(2.6, 2000, f"Avg: {prop['avg']:.1f}")
     plt.show()
 
