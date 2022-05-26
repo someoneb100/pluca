@@ -59,3 +59,86 @@ def make_model_2(input_shape):
     model = Model(inputs=[input_layer], outputs=[output_layer])
     model.compile(loss="binary_crossentropy", optimizer=Adam(learning_rate=learning_rate), metrics=['accuracy',Precision(), Recall()])
     return model
+
+def make_model_3(input_shape):
+    learning_rate = 0.001
+    input_layer = Input(input_shape)
+    rs = Rescaling(scale=1/255.0)(input_layer)
+    gauss = GaussianNoise(3/255.0)(rs)
+    clip_input = clip_by_value(gauss, 0, 1)
+    reshape_input = Reshape((input_shape[0], input_shape[1], 1))(clip_input)
+
+    c1 = Conv2D(8, (3,3), activation="relu")(reshape_input)
+    c2 = Conv2D(12, (4,4), activation="relu")(c1)
+    mp2 = MaxPool2D((2,2))(c2)
+    c3 = Conv2D(16, (5,5), activation="relu")(mp2)
+    mp3 = MaxPool2D((4,4))(c3)
+    c4 = Conv2D(20, (5,5), activation="relu")(mp3)
+    mp4 = MaxPool2D((5,6))(c4)
+    #drop1 = Dropout(0.2)(c4) 
+    flat = Flatten()(mp4)
+    
+    d1 = Dense(256, activation="relu")(flat)
+    d2 = Dense(128, activation="relu")(d1)
+    
+    #drop2 = Dropout(0.3)(d2)
+    output_layer = Dense(1, activation="sigmoid")(d2)
+    model = Model(inputs=[input_layer], outputs=[output_layer])
+    model.compile(loss="binary_crossentropy", optimizer=Adam(learning_rate=learning_rate), metrics=['accuracy',Precision(), Recall()])
+    return model
+
+def make_model_4(input_shape):
+    learning_rate = 0.001
+    input_layer = Input(input_shape)
+    rs = Rescaling(scale=1/255.0)(input_layer)
+    gauss = GaussianNoise(2.25/255.0)(rs)
+    clip_input = clip_by_value(gauss, 0, 1)
+    reshape_input = Reshape((input_shape[0], input_shape[1], 1))(clip_input)
+
+    c1 = Conv2D(8, (3,3), activation="relu")(reshape_input)
+    mp1 = MaxPool2D((2,2))(c1)
+    c2 = Conv2D(12, (5,5), activation="relu")(mp1)
+    mp2 = MaxPool2D((3,2))(c2)
+    c3 = Conv2D(16, (5,5), activation="relu")(mp2)
+    mp3 = MaxPool2D((4,3))(c3)
+    c4 = Conv2D(20, (4,4), activation="relu")(mp3)
+    mp4 = MaxPool2D((3,4))(c4)
+    #drop1 = Dropout(0.2)(c4) 
+    flat = Flatten()(mp4)
+    
+    d1 = Dense(128, activation="relu")(flat)
+    d2 = Dense(64, activation="relu")(d1)
+    
+    #drop2 = Dropout(0.4)(d2)
+    output_layer = Dense(1, activation="sigmoid")(d2)
+    model = Model(inputs=[input_layer], outputs=[output_layer])
+    model.compile(loss="binary_crossentropy", optimizer=Adam(learning_rate=learning_rate), metrics=['accuracy',Precision(), Recall()])
+    return model
+
+def make_model_5(input_shape):
+    learning_rate = 0.01
+    input_layer = Input(input_shape)
+    rs = Rescaling(scale=1/255.0)(input_layer)
+    gauss = GaussianNoise(3.75/255.0)(rs)
+    clip_input = clip_by_value(gauss, 0, 1)
+    reshape_input = Reshape((input_shape[0], input_shape[1], 1))(clip_input)
+
+    c1 = Conv2D(12, (3,3), activation="relu")(reshape_input)
+    mp1 = MaxPool2D((2,2))(c1)
+    c2 = Conv2D(12, (5,5), activation="relu")(mp1)
+    mp2 = MaxPool2D((2,2))(c2)
+    c3 = Conv2D(20, (5,5), activation="relu")(mp2)
+    mp3 = MaxPool2D((4,3))(c3)
+    c4 = Conv2D(20, (5,4), activation="relu")(mp3)
+    mp4 = MaxPool2D((5,6))(c4)
+    drop1 = Dropout(0.25)(mp4) 
+    flat = Flatten()(drop1)
+    
+    d1 = Dense(128, activation="relu")(flat)
+    d2 = Dense(64, activation="relu")(d1)
+    
+    #drop2 = Dropout(0.4)(d2)
+    output_layer = Dense(1, activation="sigmoid")(d2)
+    model = Model(inputs=[input_layer], outputs=[output_layer])
+    model.compile(loss="binary_crossentropy", optimizer=Adam(learning_rate=learning_rate), metrics=['accuracy',Precision(), Recall()])
+    return model
