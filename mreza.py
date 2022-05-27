@@ -2,7 +2,6 @@ from os import path, listdir
 from PIL import Image
 import numpy as np
 import json
-from sklearn.metrics import f1_score
 
 from tensorflow.keras.layers import GaussianNoise, Input, Rescaling, Reshape, Dropout, Flatten
 from tensorflow import clip_by_value
